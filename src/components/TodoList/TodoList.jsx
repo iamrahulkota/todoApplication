@@ -1,35 +1,23 @@
-import React, { useContext } from 'react'
+
 import Todo from '../Todo/Todo'
-import TodoContext from '../TodoContext/TodoContext'
+import { useDispatch, useSelector } from 'react-redux';
 
 function TodoList() {
 
-  const {todos, settodos} = useContext(TodoContext);
+  const dispatch = useDispatch();
+  const todos = useSelector(state => state.todos);
+
 
   function onDeleteTodo(id){
-    const newTodoList = todos.filter(todo=>todo.id!=id);
-    settodos(newTodoList);
+    dispatch({type : 'delete_todo', payload : {id}})
   }
 
   function onEditTodo(id, newTodo){
-    const newTodoList = todos.map(todo=>{
-      if (todo.id==id)
-        {
-          todo.text = newTodo;
-        }
-        return todo;
-    })
-    settodos(newTodoList);
+    dispatch({type : 'edit_todo', payload : {id, newTodo}})
   }
 
   function onFinishtodo(id, state){
-    const newTodoList = todos.map(todo=>{
-      if(todo.id==id){
-        todo.isFinished = state;
-      }
-      return todo;
-    });
-    settodos(newTodoList)
+    dispatch({type : 'finish_todo', payload : {id, state}})
   }
 
   return (

@@ -1,12 +1,16 @@
-import React, { useContext, useState } from 'react'
-import TodoContext from '../TodoContext/TodoContext';
+import React, { useState } from 'react'
 
+import { useDispatch } from "react-redux";
 function AddTodo() {
 
-    const { todos, settodos } = useContext(TodoContext);
+    const dispatch = useDispatch();
 
     const [todoText,settodoText] = useState('');
 
+    function addTodo(todoText)
+    {
+        dispatch({type : 'add_todo', payload: {todoText}})
+    }
 
  return (
     <>
@@ -14,8 +18,7 @@ function AddTodo() {
         onChange={(e)=>settodoText(e.target.value)}
         value={todoText}/>
         <button onClick={()=>{
-            let nextId = todos.length+1;
-            settodos([...todos, {id : nextId, text : todoText, isFinshed : false}]);
+            addTodo(todoText);
             settodoText('');
         }}>Submit</button>
     </>
